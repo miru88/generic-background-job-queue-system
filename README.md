@@ -1,73 +1,76 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Generic Background Job Queue System – Project Plan & MVP Timeline
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Overview:  
+This project focuses on building a Generic Background Job Queue using NestJS, BullMQ, and Redis to process jobs asynchronously. The aim is to allow tasks (e.g., emails, database cleanup, report generation) to be queued, processed, and tracked dynamically, leveraging generics for flexibility across different job types.
 
-## Description
+MVP Goals:
+- Generic Background Job Queue: Flexibility to handle any type of background job.
+- Job Types: Email sending, cleanup tasks, report generation.
+- Job Scheduling: Run tasks at specific times (e.g., daily cleanup).
+- Job Status Tracking: Monitor job completion, retries, and failures.
+- API for Job Creation: API endpoints to manually trigger jobs.
+- Job Logging: Basic logging of job progress and results.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+📅 MVP Timeline (5 Days Plan)
 
-## Installation
+Day 1: 🏗️ Project Setup & Dependencies
+- Initialize the NestJS project using NestJS CLI:  
+  nest new job-queue-api
+- Install BullMQ and Redis dependencies:  
+  npm install bullmq redis
+- Set up environment variables (e.g., REDIS_URL) for Redis connection.
+- Install Swagger for API documentation:  
+  npm install @nestjs/swagger swagger-ui-express
+- Set up Redis locally or via Docker.
 
-```bash
-$ npm install
-```
+-Ubuntu 24.04.1 LTS (GNU/Linux 5.15.167.4-microsoft-standard-WSL2 x86_64)
+-https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/install-redis-on-windows/
+-redis-cli
 
-## Running the app
+Day 2: 📚 Implement Generic JobQueue<T> Class
+- Create a generic JobQueue class that accepts different job types (e.g., emails, cleanup).
+- Implement methods to add, retrieve, and track jobs in the queue.
+- Set up BullMQ queue for processing jobs asynchronously.
 
-```bash
-# development
-$ npm run start
+Day 3: 🛠️ Implement Job Processors
+- Create job processors for various types of tasks:  
+  - Email processing (sending emails)
+  - Cleanup tasks (e.g., removing old data)
+  - Report generation
+- Implement the job processing logic for each type, making sure the `JobQueue<T>` is generic and flexible.
 
-# watch mode
-$ npm run start:dev
+Day 4: ⏲️ Job Scheduling & Job Status Tracking
+- Implement job scheduling (e.g., tasks run daily or at specific intervals).
+- Track job status: Pending, Completed, Failed.
+- Use BullMQ’s built-in support for retries, progress updates, and failure handling.
+- Implement an API endpoint to query the job status.
 
-# production mode
-$ npm run start:prod
-```
+Day 5: 📢 Add API Endpoints & Logging
+- Implement REST API endpoints for triggering jobs manually (e.g., POST /jobs/send-email).
+- Implement API responses with Swagger for easy interaction.
+- Log job progress and completion using a simple logging mechanism.
+- Ensure all jobs have clear statuses and error tracking.
 
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+📂 Project Structure
+ ┣ 📂 src
+ ┃ ┣ 📂 job-queue
+ ┃ ┃ ┣ 📂 processors
+ ┃ ┃ ┃ ┣ 📣 email.processor.ts
+ ┃ ┃ ┃ ┣ 📣 cleanup.processor.ts
+ ┃ ┃ ┃ ┗ 📣 report.processor.ts
+ ┃ ┃ ┣ 📂 services
+ ┃ ┃ ┃ ┣ 📣 job-queue.service.ts
+ ┃ ┃ ┃ ┗ 📣 job-status.service.ts
+ ┃ ┃ ┣ 📂 controllers
+ ┃ ┃ ┃ ┣ 📣 job.controller.ts
+ ┃ ┃ ┃ ┗ 📣 job-status.controller.ts
+ ┃ ┣ 📂 common
+ ┃ ┃ ┣ 📣 api-response.ts
+ ┃ ┃ ┣ 📣 job-status.ts
+ ┃ ┣ 📂 config
+ ┃ ┃ ┗ 📣 redis.config.ts
+ ┃ ┣ main.ts
+ ┃ ┗ app.module.ts
+ ┗ 📄 README.md
+"""
